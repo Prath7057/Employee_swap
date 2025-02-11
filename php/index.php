@@ -36,7 +36,16 @@
             include 'employees.php';
             ?>
         </div>
+        <div>
+            <button class="btn btn-secondary" onclick="openAddEmployeeDiv(document.getElementById('department').value);">
+                ADD
+            </button>
+        </div>
     </div>
+    <div id="addEmployeeDiv" style="position: fixed; top: 35%; left: 50%; transform: translateX(-50%); border: 1px solid black; height: auto; width: 40%; background-color: white; padding: 20px;display:none;">
+
+    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
@@ -61,7 +70,7 @@
             var selectedOptions = selectElement.selectedOptions;
             var selectedIds = [];
             for (var i = 0; i < selectedOptions.length; i++) {
-                selectedIds.push(selectedOptions[i].value); 
+                selectedIds.push(selectedOptions[i].value);
             }
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
@@ -74,6 +83,54 @@
             var params = "selectedIds=" + encodeURIComponent(JSON.stringify(selectedIds)) + "&target=" + target;
 
             xhttp.open("POST", "changeEmployee.php", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send(params);
+        }
+
+        function openAddEmployeeDiv(department) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('addEmployeeDiv').style.display = 'block';
+                    document.getElementById("addEmployeeDiv").innerHTML = xhttp.responseText;
+                    var select = document.getElementById('input-department');
+                    for (var i = 0; i < select.options.length; i++) {
+                        if (select.options[i].value == department) {
+                            select.selectedIndex = i;
+                            break;
+                        }
+                    }
+                    document.getElementById('name').focus();
+                } else {
+                    document.getElementById('addEmployeeDiv').style.display = 'none';
+                }
+            };
+            var params = "department=" + encodeURIComponent(department);
+            xhttp.open("POST", "addEmployee.php", true);
+            xhttp.send(params);
+        }
+
+        function addEmployee() {
+            let department = document.getElementById('input-department').value;
+            let name = document.getElementById('name').value;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById('addEmployeeDiv').style.display = 'none';
+                    document.getElementById('addEmployeeDiv').innerHTML = '';
+                    var select = document.getElementById('department');
+                    for (var i = 0; i < select.options.length; i++) {
+                        if (select.options[i].value == department) {
+                            select.selectedIndex = i;
+                            break;
+                        }
+                    }
+                    changeDepartment(department);
+                }
+            };
+
+            var params = "department=" + encodeURIComponent(department) + '&name=' + name;
+            xhttp.open("POST", "addEmployee.php", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhttp.send(params);
         }
