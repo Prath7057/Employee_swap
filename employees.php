@@ -19,8 +19,8 @@ if ($result->num_rows > 0) {
 }
 ?>
 
-<div class="me-5">
-    <select class="form-select mb-3" style="width: 130%;" id="zero" aria-label="Department List" multiple size="5">
+<div class="me-5" style="width:30%">
+    <select class="form-select mb-3" id="zero" aria-label="Department List" multiple size="5">
         <?php
         foreach ($employees as $row) {
             if ($row["target"] == 0) {
@@ -41,8 +41,8 @@ if ($result->num_rows > 0) {
     </button>
 </div>
 
-<div class="ms-5">
-    <select class="form-select mb-3" id="one" style="width: 130%;" aria-label="Department List" multiple size="5">
+<div class="ms-5" style="width:30%">
+    <select class="form-select mb-3" id="one"  aria-label="Department List" multiple size="5">
         <?php
         // Loop through the stored employees array and display target = 1
         foreach ($employees as $row) {
