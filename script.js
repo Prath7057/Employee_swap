@@ -68,10 +68,12 @@ function addEmployee() {
   let id = document.getElementById("id").value;
   if(name == '') {
     alert('Please Enter Name');
+    document.getElementById("name").focus();
     return;
   }
   if(department == '') {
     alert('Please Select Department');
+    document.getElementById("input-department").focus();
     return;
   }
   var xhttp = new XMLHttpRequest();
